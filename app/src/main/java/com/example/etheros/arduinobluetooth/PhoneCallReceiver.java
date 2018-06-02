@@ -1,5 +1,6 @@
 package com.example.etheros.arduinobluetooth;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import android.content.BroadcastReceiver;
@@ -12,7 +13,7 @@ public abstract class PhoneCallReceiver extends BroadcastReceiver {
     //The receiver will be recreated whenever android feels like it.  We need a static variable to remember data between instantiations
 
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;
-    private static Date callStartTime;
+    private static Calendar callStartTime;
     private static boolean isIncoming;
     private static String savedNumber;  //because the passed incoming is only valid in ringing
 
@@ -44,11 +45,11 @@ public abstract class PhoneCallReceiver extends BroadcastReceiver {
     }
 
     //Derived classes should override these to respond to specific events of interest
-    protected void onIncomingCallStarted(Context ctx, String number, Date start){}
-    protected void onOutgoingCallStarted(Context ctx, String number, Date start){}
-    protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end){}
-    protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end){}
-    protected void onMissedCall(Context ctx, String number, Date start){}
+    protected void onIncomingCallStarted(Context ctx, String number, Calendar start){}
+    protected void onOutgoingCallStarted(Context ctx, String number, Calendar start){}
+    protected void onIncomingCallEnded(Context ctx, String number, Calendar start, Calendar end){}
+    protected void onOutgoingCallEnded(Context ctx, String number, Calendar start, Calendar end){}
+    protected void onMissedCall(Context ctx, String number, Calendar start){}
 
     //Deals with actual events
 
@@ -62,7 +63,7 @@ public abstract class PhoneCallReceiver extends BroadcastReceiver {
         switch (state) {
             case TelephonyManager.CALL_STATE_RINGING:
                 isIncoming = true;
-                callStartTime = new Date();
+                callStartTime = Calendar.getInstance();
                 savedNumber = number;
                 onIncomingCallStarted(context, number, callStartTime);
                 break;
@@ -70,7 +71,7 @@ public abstract class PhoneCallReceiver extends BroadcastReceiver {
                 //Transition of ringing->offhook are pickups of incoming calls.  Nothing done on them
                 if(lastState != TelephonyManager.CALL_STATE_RINGING){
                     isIncoming = false;
-                    callStartTime = new Date();
+                    callStartTime = Calendar.getInstance();
                     onOutgoingCallStarted(context, savedNumber, callStartTime);
                 }
                 break;
@@ -81,10 +82,10 @@ public abstract class PhoneCallReceiver extends BroadcastReceiver {
                     onMissedCall(context, savedNumber, callStartTime);
                 }
                 else if(isIncoming){
-                    onIncomingCallEnded(context, savedNumber, callStartTime, new Date());
+                    onIncomingCallEnded(context, savedNumber, callStartTime, Calendar.getInstance());
                 }
                 else{
-                    onOutgoingCallEnded(context, savedNumber, callStartTime, new Date());
+                    onOutgoingCallEnded(context, savedNumber, callStartTime, Calendar.getInstance());
                 }
                 break;
         }
