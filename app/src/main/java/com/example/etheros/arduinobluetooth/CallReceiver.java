@@ -15,7 +15,7 @@ public class CallReceiver extends PhoneCallReceiver {
     protected void onIncomingCallStarted(Context ctx, String number, Calendar start) {
         String caller = number.substring(3);
 
-        sendData("Calling\n\n" + caller);
+        sendData("xc" + caller + "\n");
 
         Log.i("test","Calling\n" + caller);
     }
@@ -26,6 +26,7 @@ public class CallReceiver extends PhoneCallReceiver {
 
     @Override
     protected void onIncomingCallEnded(Context ctx, String number, Calendar start, Calendar end) {
+        sendData("xe\n");
     }
 
     @Override
@@ -34,9 +35,7 @@ public class CallReceiver extends PhoneCallReceiver {
 
     @Override
     protected void onMissedCall(Context ctx, String number, Calendar start) {
-        String caller = number.substring(3);
-
-        sendData("Missed call\n\n" + caller + "\n\n at: " + start.get(Calendar.HOUR_OF_DAY) + ":" + start.get(Calendar.MINUTE));
+        sendData("xm\n");
     }
 
 

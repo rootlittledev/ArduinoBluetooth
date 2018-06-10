@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">ArduinoBluetooth</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Arduino bluetooth</string>
+    <string name="function_one">Notification</string>
+    <string name="function_two">Weather</string>
+    <string name="function_three">Timer</string>
+    <string name="function_four">Info</string>
+    <string name="text_hint">Enter text</string>
 </resources>
