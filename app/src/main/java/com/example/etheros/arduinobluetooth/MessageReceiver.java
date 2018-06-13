@@ -13,6 +13,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.io.IOException;
 import java.io.OutputStream;
 
+//Створюємо клас MessageReceiver який наслідує клас NotificationListenerService
 public class MessageReceiver extends NotificationListenerService{
 
     Context context;
@@ -24,10 +25,13 @@ public class MessageReceiver extends NotificationListenerService{
         context = getApplicationContext();
 
     }
+
+    //Перевантажуємо метод onNotificationPosted який буде виконуватись при новому сповіщенню
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
+        Log.i("Notification", "Started");
 
-
+        //Отримуємо інформацію про сповіщення
         String pack = sbn.getPackageName();
 
         PackageManager packageManager= getApplicationContext().getPackageManager();
@@ -40,11 +44,13 @@ public class MessageReceiver extends NotificationListenerService{
 
         Log.i("Package", pack);
 
-        if(!pack.equals("android") && !appName.equals("Security") && !appName.equals("Call") && !appName.equals("Phone"))
+        // Відправляємо дані на пристрій
+        if(!pack.equals("android") && !appName.equals("Security") && !appName.equals("Call") && !appName.equals("Phone service"))
         sendData("xl" + appName + "\n" );
 
     }
 
+    //Перевантажуємо метод onNotificationRemoved який буде виконуватись після перегляду сповіщення
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
         sendData("xr\n");
@@ -52,17 +58,19 @@ public class MessageReceiver extends NotificationListenerService{
     }
 
 
-
+    //Метод sendData який відповідає за відпраку даних на пристрій
     public void sendData(String message) {
+        //Зберігаємо наше повідомлення
         byte[] msgBuffer = message.getBytes();
 
+        //Створюємо звязок з пристроєм
         OutputStream outStream = ArduinoMain.outStream;
 
         try {
-            //attempt to place data on the outstream to the BT device
+            //відправляєм дані
             outStream.write(msgBuffer);
         } catch (IOException e) {
-            //if the sending fails this is most likely because device is no longer there
+            //виводим помилку якщо не вдалось відправити
 
         }
         Log.i("test", message);

@@ -8,13 +8,16 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 
+//Створюємо клас CallReceiver який наслідує клас PhoneCallReceiver
 public class CallReceiver extends PhoneCallReceiver {
 
-
+    //Перевантажуємо метод onIncomingCallStarted який буде виконуватись при вхідному дзвінку
     @Override
     protected void onIncomingCallStarted(Context ctx, String number, Calendar start) {
+        //зчитуємо інформацію про того хто телефонує
         String caller = number.substring(3);
 
+        //відправляємо інформацію
         sendData("xc" + caller + "\n");
 
         Log.i("test","Calling\n" + caller);
@@ -24,8 +27,10 @@ public class CallReceiver extends PhoneCallReceiver {
     protected void onOutgoingCallStarted(Context ctx, String number, Calendar start) {
     }
 
+    //Перевантажуємо метод onIncomingCallEnded який буде виконуватись при завершенні дзвінка
     @Override
     protected void onIncomingCallEnded(Context ctx, String number, Calendar start, Calendar end) {
+        //відправляємо сигнал про завершення дзвінка
         sendData("xe\n");
     }
 

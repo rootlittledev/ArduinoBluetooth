@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Arduino bluetooth</string>
+    <string name="app_name">Smart Ethero</string>
     <string name="function_one">Notification</string>
     <string name="function_two">Weather</string>
     <string name="function_three">Timer</string>
